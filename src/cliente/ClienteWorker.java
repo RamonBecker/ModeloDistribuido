@@ -9,30 +9,31 @@ import java.util.Scanner;
 public class ClienteWorker implements Runnable {
 
 	// private Socket socket;
-	private int port;
+	// private int port;
 	private String message;
-	
+
 	public void initConnection(int port) {
 		try (Socket socket = new Socket("localhost", port); Scanner scanner = new Scanner(System.in);) {
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			out.writeUTF("Teste ola mundo");
+
+			this.message = scanner.next();
+			out.writeUTF(this.message);
 			out.flush();
 
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-			String msg = in.readUTF();
-
+			String responseServer = in.readUTF();
+			System.out.println("Mensagem recebida do servidor:" + responseServer);
 			in.close();
 
-			// socket = new Socket("localhost", port);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
 		}
 	}
 
 	@Override
 	public void run() {
-
+		initConnection(2800);
 	}
 
 }
