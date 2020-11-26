@@ -11,14 +11,9 @@ public class MainServidor {
 
 	public static void main(String[] args) throws IOException {
 
-		ss = new ServerSocket(2800);
+		ServidorWorker server = new ServidorWorker(2800);
 
-		while (true) {
-			s = ss.accept();
-			//ServidorWorker t1 = new ServidorWorker(s);
-		///	t1.run();
-
-		}
+		server.run();
 
 	}
 

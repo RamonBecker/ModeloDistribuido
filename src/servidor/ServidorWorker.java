@@ -8,37 +8,39 @@ import java.net.Socket;
 
 public class ServidorWorker implements Runnable {
 
-	private Socket client;
 	private ServerSocket serverSocket;
-	private int port;
 
-	public ServidorWorker(int port, Socket client) {
-		this.port = port;
-		this.client = client;
+	public ServidorWorker(int port) {
+		createdServerSocket(port);
 	}
 
-	private void createdServerSocket() {
-		try {
-			this.serverSocket = new ServerSocket(this.port);
+	private void createdServerSocket(int port) {
+		try{
+			this.serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.print(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
 		}
 	}
-	
-	private void processRequestClient() {
-		
+
+	private void acceptRequestClient() {
+		try (Socket client = serverSocket.accept()) {
+			processRequestClient(client);
+		} catch (IOException e) {
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
+		}
 	}
 
-	@Override
-	public void run() {
-
+	private void processRequestClient(Socket client) {
 		try {
 
-			ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress() + " porta:"
+					+ client.getLocalPort());
 
+			ObjectInputStream in = new ObjectInputStream(client.getInputStream());
 			String msg = in.readUTF();
 			System.out.println("Cliente enviou: " + msg);
-
 			ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
 			out.writeUTF("OK");
@@ -47,9 +49,17 @@ public class ServidorWorker implements Runnable {
 			out.close();
 
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
 
+		}
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			acceptRequestClient();
+		}
 	}
 
 }
