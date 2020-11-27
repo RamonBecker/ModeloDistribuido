@@ -35,12 +35,12 @@ public class ServidorWorker implements Runnable {
 	private void processRequestClient(Socket client) {
 		try {
 
-			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress() + " porta:"
+			System.out.println("Peer conectado: " + client.getInetAddress().getHostAddress() + " porta:"
 					+ client.getLocalPort());
 
 			ObjectInputStream in = new ObjectInputStream(client.getInputStream());
 			String msg = in.readUTF();
-			System.out.println("Cliente enviou: " + msg);
+			System.out.println("Peer enviou: " + msg);
 			ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
 			out.writeUTF("OK");

@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class ClienteWorker implements Runnable {
 
-	// private Socket socket;
-	// private int port;
+
 	private String message;
+
 
 	public void initConnection(int port) {
 		try (Socket socket = new Socket("localhost", port); Scanner scanner = new Scanner(System.in);) {
@@ -33,7 +33,10 @@ public class ClienteWorker implements Runnable {
 
 	@Override
 	public void run() {
-		initConnection(2800);
+
+		while (true) {
+			initConnection(2800);
+		}
 	}
 
 }
