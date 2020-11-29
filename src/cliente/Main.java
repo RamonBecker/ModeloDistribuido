@@ -1,20 +1,24 @@
 package cliente;
 
+import java.util.HashMap;
+
+import Controller.ControllerPeer;
+
 public class Main {
 
-	public static void main(String args[]){
+	private static ControllerPeer controllerPeer = new ControllerPeer();
 
-		int id = 1;//Integer.parseInt(args[0]);1
-		//Peer peer1 = new Peer(, porta);
-		processID(id);
+	public static void main(String args[]) {
+
+		controllerPeer.initAddPeer();
+		int j;
+
+		HashMap<Integer, Peer> lista = controllerPeer.getList();
 		
-	}
-	
-	
-	private static void processID(int id) {
-		
-		for (int i = 1; i < 6; i++) {
-			 System.out.println(id+i);
+		for (Integer id : lista.keySet()) {
+			Peer peer = lista.get(id);
+			System.out.println(peer);
+			
 		}
 	}
 

@@ -2,29 +2,30 @@ package cliente;
 
 import java.util.HashMap;
 
-public class Peer {
-	private int id;
+public class Peer extends Thread {
+	private int id_Peer;
 	private String messageReceived;
 	private String ip;
 	private int porta;
 	private HashMap<Integer, Peer> neighbor;
 	private boolean arrivalMessage;
 
-	public Peer(int id, int porta) {
-		this.id = id;
+	public Peer(int idPeer, int porta) {
+		this.id_Peer = idPeer;
 		this.ip = "127.0.0.1";
-		if (!(porta >= 28001)) {
+		if (!(porta > 2800)) {
 			throw new IllegalArgumentException("Porta não indisponível");
 		}
 		this.porta = porta;
+		this.neighbor = new HashMap<Integer, Peer>();
 	}
 
-	public int getId() {
-		return id;
+	public int getIdPeer() {
+		return id_Peer;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.id_Peer = id;
 	}
 
 	public String getMessageReceived() {
@@ -69,4 +70,13 @@ public class Peer {
 		this.arrivalMessage = arrivalMessage;
 	}
 
+	@Override
+	public String toString() {
+		return "Peer [id_Peer=" + id_Peer +  " ip=" + ip + ", porta=" + porta
+				+ ", neighbor=" + neighbor;
+	}
+
+
+	
+	
 }
