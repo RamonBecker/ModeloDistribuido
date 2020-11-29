@@ -14,15 +14,31 @@ public class ControllerPeer {
 	}
 
 	private void addPeer(Integer id, Peer peer) {
+		Peer auxAnterior = null;
+		Peer auxSucessor = null;
+
 		if (id < 0) {
 			throw new IllegalArgumentException("O id não pode ser negativo");
 		} else if (peer == null) {
 			throw new IllegalArgumentException("O Peer não pode ser nulo");
 		}
+		
+		if (id >= 5) {
+			auxAnterior = new Peer(id - 1, peer.getPorta() - 1);
+			auxSucessor = new Peer(id + 1, peer.getPorta() + 1);
 
-		peer.getNeighbor().put(id + 1, new Peer(id + 1, peer.getPorta() + 1));
-		peer.getNeighbor().put(id + 2, new Peer(id + 2, peer.getPorta() + 2));
+		} else {
+			auxAnterior = new Peer(id + 1, peer.getPorta() + 1);
+		}
 
+		if (id == 6) {
+			auxAnterior = new Peer(id - 1, peer.getPorta() - 1);
+			auxSucessor = new Peer(1, peer.getPorta() - 5);
+		} else if (id < 5) {
+			auxSucessor = new Peer(id + 2, peer.getPorta() + 2);
+		}
+		peer.getNeighbor().put(auxAnterior.getIdPeer(), auxAnterior);
+		peer.getNeighbor().put(auxSucessor.getIdPeer(), auxSucessor);
 		list.put(id, peer);
 	}
 
