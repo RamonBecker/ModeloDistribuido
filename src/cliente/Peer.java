@@ -20,11 +20,18 @@ public class Peer extends Thread {
 		this.neighbor = new HashMap<Integer, Peer>();
 	}
 
+	public void serverRequestNeighbor() {
+
+	}
+
 	public int getIdPeer() {
 		return id_Peer;
 	}
 
 	public void setId(int id) {
+		if (id <= 0) {
+			throw new IllegalArgumentException("O id não pode ser zero ou negativo. ID: " + id);
+		}
 		this.id_Peer = id;
 	}
 
@@ -33,6 +40,9 @@ public class Peer extends Thread {
 	}
 
 	public void setMessageReceived(String message) {
+		if (message.isEmpty() || message == null) {
+			throw new IllegalArgumentException("A mensagem não pode ser vazia");
+		}
 		this.messageReceived = message;
 	}
 
@@ -72,11 +82,6 @@ public class Peer extends Thread {
 
 	@Override
 	public String toString() {
-		return "Peer [id_Peer=" + id_Peer +  " ip=" + ip + ", porta=" + porta
-				+ ", neighbor=" + neighbor;
+		return "Peer [id_Peer=" + id_Peer + " ip=" + ip + ", porta=" + porta + ", neighbor=" + neighbor;
 	}
-
-
-	
-	
 }
