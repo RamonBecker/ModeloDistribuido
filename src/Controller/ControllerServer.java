@@ -9,7 +9,7 @@ import servidor.Server;
 public class ControllerServer {
 	private HashMap<Integer, Server> listServer;
 
-	public void initAddServer() {
+	public void addServers() {
 		for (int i = 1; i <= 6; i++) {
 			addServer(i, new Server());
 		}
@@ -19,14 +19,14 @@ public class ControllerServer {
 		try {
 			servidor.setIdServer(id);
 			servidor.setServerSocket(new ServerSocket(2800 + id));
-			listServer.put(id, servidor);
+			getListServer().put(id, servidor);
 		} catch (IOException e) {
 			System.out.println("Não foi possível adicionar o servidor na lista");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void initServer() {
+	public void initServers() {
 		if (this.listServer.isEmpty() || this.listServer == null) {
 			throw new IllegalArgumentException(
 					"Não foi possível iniciar os servidores pois a lista está vazia ou nula !");
@@ -38,6 +38,9 @@ public class ControllerServer {
 	}
 
 	public HashMap<Integer, Server> getListServer() {
+		if(this.listServer == null) {
+			this.listServer = new HashMap<Integer, Server>();
+		}
 		return listServer;
 	}
 

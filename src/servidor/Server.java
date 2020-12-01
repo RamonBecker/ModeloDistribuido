@@ -9,7 +9,7 @@ import java.net.Socket;
 public class Server extends Thread {
 	private Integer idServer;
 	private ServerSocket serverSocket;
-	
+
 	public Server() {
 	}
 
@@ -51,7 +51,7 @@ public class Server extends Thread {
 			System.out.println("Peer enviou: " + msg);
 			ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
-			out.writeUTF("OK");
+			out.writeUTF(msg);
 			out.flush();
 			in.close();
 			out.close();
