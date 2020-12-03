@@ -51,20 +51,40 @@ public class ControllerPeer {
 		System.out.println("Peer: " + peer.getIdPeer() + " selecionado!");
 		peer.run();
 
+		checkMessageAll(peer);
 	}
 
-	public void checkMessageAll() {
-		Peer auxPeer = null;
+	public void checkMessageAll(Peer peer) {
 		Peer auxVizinho = null;
-		for (Integer id : list.keySet()) {
-			auxPeer = list.get(id);
-			for (Integer idNeighbor : auxPeer.getNeighbor().keySet()) {
-				auxVizinho = auxPeer.getNeighbor().get(idNeighbor);
-				if (auxVizinho.isArrivalMessage()) {
-
+		Peer aux_Peer = null;
+		System.out.println("Mensagem do PEER" + peer.getMessage());
+		int j = 1;
+		for (int i = 1; i < list.size(); i++) {
+			aux_Peer = list.get(i);
+			if (checkMessageVizinho(aux_Peer) == 2) {
+				for (Integer idVizinho : aux_Peer.getNeighbor().keySet()) {
+					auxVizinho = aux_Peer.getNeighbor().get(idVizinho);
+					list.get(idVizinho).setMessage(auxVizinho.getMessage());
 				}
+				System.out.println("Peer"+aux_Peer.getIdPeer());
 			}
 		}
+
+	}
+
+	public int checkMessageVizinho(Peer peer) {
+		Peer auxVizinho = null;
+		int cont = 0;
+		for (Integer id : peer.getNeighbor().keySet()) {
+			auxVizinho = peer.getNeighbor().get(id);
+			System.out.println("Peer atual:"+peer.getIdPeer()+" mensagem"+peer.getMessage());
+			System.out.println("Vizinho Peer:" + auxVizinho.getIdPeer() + " mensagem:" + auxVizinho.getMessage());
+		//	if (auxVizinho.getMessage().contentEquals(peer.getMessage())) {
+			//	cont++;
+		//	}
+
+		}
+		return cont;
 	}
 
 	public void initPeers() {

@@ -32,26 +32,27 @@ public class Peer extends Thread {
 	public void writeMessage() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Digite uma mensagem: ");
-		this.message = scanner.next();
+		String message = scanner.next();
+		this.setMessage(message);
 
 		for (Integer id : vizinho.keySet()) {
 			Peer peer = vizinho.get(id);
-			peer.requestClient(peer.getIdPeer(), peer);
+			peer.requestClient(peer.getIdPeer(), peer, message);
 		}
 	}
 
-	private void requestClient(Integer id, Peer peer) {
+	private void requestClient(Integer id, Peer peer, String message) {
 		try (Socket socket = new Socket("localhost", this.porta)) {
 
 			System.out.println("Peer: " + this.id_Peer + " enviando mensagem para Peer: " + id);
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			out.writeUTF(this.message);
+			out.writeUTF(message);
 			out.flush();
 
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			String responseServer = in.readUTF();
 			System.out.println("Peer:" + id + " recebeu a seguinte mensagem: " + responseServer);
-			peer.setArrivalMessage(true);
+			peer.setMessage(message);
 			getNeighbor().put(id, peer);
 			in.close();
 			out.close();

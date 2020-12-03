@@ -1,7 +1,9 @@
 package Controller;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import servidor.Server;
@@ -33,6 +35,13 @@ public class ControllerServer {
 		}
 		for (Integer id : listServer.keySet()) {
 			Server server = listServer.get(id);
+			System.out.println("Iniciando Peer: "+id+"  Server");
+			try {
+				System.out.println("Peer: "+id+" Server rodando na porta: "+server.getServerSocket().getLocalPort()+" Hostname:"+InetAddress.getLocalHost().getHostName()+" IP:"+InetAddress.getLocalHost().getHostAddress());
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			System.out.println();
 			server.start();
 		}
 	}
