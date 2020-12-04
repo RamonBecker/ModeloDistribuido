@@ -1,6 +1,8 @@
 package Controller;
 
 import java.util.HashMap;
+import java.util.Scanner;
+
 import cliente.Peer;
 
 public class ControllerPeer {
@@ -49,6 +51,10 @@ public class ControllerPeer {
 
 		Peer peer = list.get(id);
 		System.out.println("Peer: " + peer.getIdPeer() + " selecionado!");
+		
+		System.out.print("Digite a mensagem:");
+		String mensagem = new Scanner(System.in).next();
+		peer.setMessage(mensagem);
 		peer.run();
 
 		checkMessageAll(peer);
@@ -58,6 +64,11 @@ public class ControllerPeer {
 		Peer auxVizinho = null;
 		Peer aux_Peer = null;
 		System.out.println("Mensagem do PEER" + peer.getMessage());
+		
+		
+		
+		
+		
 		int j = 1;
 		for (int i = 1; i < list.size(); i++) {
 			aux_Peer = list.get(i);
@@ -66,7 +77,9 @@ public class ControllerPeer {
 					auxVizinho = aux_Peer.getNeighbor().get(idVizinho);
 					list.get(idVizinho).setMessage(auxVizinho.getMessage());
 				}
-				System.out.println("Peer"+aux_Peer.getIdPeer());
+				System.out.println("Peer" + aux_Peer.getIdPeer());
+			}else {
+				
 			}
 		}
 
@@ -77,11 +90,12 @@ public class ControllerPeer {
 		int cont = 0;
 		for (Integer id : peer.getNeighbor().keySet()) {
 			auxVizinho = peer.getNeighbor().get(id);
-			System.out.println("Peer atual:"+peer.getIdPeer()+" mensagem"+peer.getMessage());
-			System.out.println("Vizinho Peer:" + auxVizinho.getIdPeer() + " mensagem:" + auxVizinho.getMessage());
-		//	if (auxVizinho.getMessage().contentEquals(peer.getMessage())) {
-			//	cont++;
-		//	}
+
+			if (auxVizinho.getMessage() != null && peer.getMessage() != null) {
+				if (auxVizinho.getMessage().contentEquals(peer.getMessage())) {
+					cont++;
+				}
+			}
 
 		}
 		return cont;

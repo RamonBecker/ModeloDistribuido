@@ -26,33 +26,33 @@ public class Peer extends Thread {
 	}
 
 	public void run() {
-		writeMessage();
+		writeMessage(getMessage());
 	}
 
-	public void writeMessage() {
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Digite uma mensagem: ");
-		String message = scanner.next();
-		this.setMessage(message);
+	public void writeMessage(String mensagem) {
+//		Scanner scanner = new Scanner(System.in);
+//		System.out.println("Digite uma mensagem: ");
+//		String message = scanner.next();
+//		this.setMessage(message);
 
 		for (Integer id : vizinho.keySet()) {
-			Peer peer = vizinho.get(id);
-			peer.requestClient(peer.getIdPeer(), peer, message);
+			Peer peerVizinho = vizinho.get(id);
+			peerVizinho.requestClient(peerVizinho.getIdPeer(), peerVizinho,  mensagem);
 		}
 	}
 
-	private void requestClient(Integer id, Peer peer, String message) {
+	private void requestClient(Integer id, Peer peer, String mensagem) {
 		try (Socket socket = new Socket("localhost", this.porta)) {
 
 			System.out.println("Peer: " + this.id_Peer + " enviando mensagem para Peer: " + id);
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			out.writeUTF(message);
+			out.writeUTF(mensagem);
 			out.flush();
 
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			String responseServer = in.readUTF();
 			System.out.println("Peer:" + id + " recebeu a seguinte mensagem: " + responseServer);
-			peer.setMessage(message);
+			peer.setMessage(mensagem);
 			getNeighbor().put(id, peer);
 			in.close();
 			out.close();
