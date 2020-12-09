@@ -8,6 +8,7 @@ import cliente.Peer;
 public class ControllerPeer {
 
 	private HashMap<Integer, Peer> list;
+	private String mensagem;
 
 	public ControllerPeer() {
 		list = new HashMap<Integer, Peer>();
@@ -51,35 +52,33 @@ public class ControllerPeer {
 
 		Peer peer = list.get(id);
 		System.out.println("Peer: " + peer.getIdPeer() + " selecionado!");
-		
-		System.out.print("Digite a mensagem:");
-		String mensagem = new Scanner(System.in).next();
-		peer.setMessage(mensagem);
-		peer.run();
 
-		checkMessageAll(peer);
+		while (true) {
+			System.out.print("Digite a mensagem:");
+			this.mensagem = new Scanner(System.in).next();
+			peer.setMessage(this.mensagem);
+			peer.run();
+
+			checkPeer(peer);
+		}
 	}
 
-	public void checkMessageAll(Peer peer) {
+	public void checkPeer(Peer peer) {
 		Peer auxVizinho = null;
 		Peer aux_Peer = null;
-		System.out.println("Mensagem do PEER" + peer.getMessage());
-		
-		
-		
-		
-		
-		int j = 1;
-		for (int i = 1; i < list.size(); i++) {
+
+		for (int i = 1; i <= list.size(); i++) {
 			aux_Peer = list.get(i);
 			if (checkMessageVizinho(aux_Peer) == 2) {
 				for (Integer idVizinho : aux_Peer.getNeighbor().keySet()) {
 					auxVizinho = aux_Peer.getNeighbor().get(idVizinho);
 					list.get(idVizinho).setMessage(auxVizinho.getMessage());
 				}
-				System.out.println("Peer" + aux_Peer.getIdPeer());
-			}else {
-				
+				// k++;
+			} else {
+				aux_Peer.setMessage(this.mensagem);
+				aux_Peer.run();
+				list.put(aux_Peer.getIdPeer(), aux_Peer);
 			}
 		}
 
@@ -101,14 +100,7 @@ public class ControllerPeer {
 		return cont;
 	}
 
-	public void initPeers() {
-		for (Integer id : list.keySet()) {
-
-		}
-	}
-
 	public void initAddPeer() {
-
 		for (int i = 1; i <= 6; i++) {
 			addPeer(i, new Peer(i, 2800 + i));
 		}

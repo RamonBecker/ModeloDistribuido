@@ -43,15 +43,18 @@ public class Server extends Thread {
 	private void processRequestClient(Socket client) {
 
 		try {
-			System.out.println(
-					"Peer conectado: " + client.getInetAddress().getHostAddress() + " porta:" + client.getLocalPort());
+			
 
 			ObjectInputStream in = new ObjectInputStream(client.getInputStream());
 			String msg = in.readUTF();
-			System.out.println("Peer enviou: " + msg);
+			//System.out.println("Peer enviou: " + msg);
+			String [] texto = msg.split(" ");
+			System.out.println(
+					"Peer: "+texto[1]+" conectado: " + client.getInetAddress().getHostAddress() + " porta:" + client.getLocalPort());
+			System.out.println("Peer: "+texto[1]+ " enviou a seguinte mensagem:"+texto[0]);
 			ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
-			out.writeUTF(msg);
+			out.writeUTF(texto[0]);
 			out.flush();
 			in.close();
 			out.close();

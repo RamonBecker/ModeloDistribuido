@@ -30,10 +30,6 @@ public class Peer extends Thread {
 	}
 
 	public void writeMessage(String mensagem) {
-//		Scanner scanner = new Scanner(System.in);
-//		System.out.println("Digite uma mensagem: ");
-//		String message = scanner.next();
-//		this.setMessage(message);
 
 		for (Integer id : vizinho.keySet()) {
 			Peer peerVizinho = vizinho.get(id);
@@ -43,15 +39,15 @@ public class Peer extends Thread {
 
 	private void requestClient(Integer id, Peer peer, String mensagem) {
 		try (Socket socket = new Socket("localhost", this.porta)) {
-
-			System.out.println("Peer: " + this.id_Peer + " enviando mensagem para Peer: " + id);
+			
+			System.out.println("Enviando mensagem para Peer: " + id);
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			out.writeUTF(mensagem);
+			out.writeUTF(mensagem+" "+String.valueOf(this.getIdPeer()));
 			out.flush();
 
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			String responseServer = in.readUTF();
-			System.out.println("Peer:" + id + " recebeu a seguinte mensagem: " + responseServer);
+			System.out.println("Peer:" + id + " recebeu a seguinte mensagem: " + responseServer+"\n");
 			peer.setMessage(mensagem);
 			getNeighbor().put(id, peer);
 			in.close();
